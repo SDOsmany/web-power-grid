@@ -1,4 +1,5 @@
 import type { GameState, GamePhase, Player } from '../types/game';
+import { PLAYER_CONFIG, refillResourceMarket } from './gameLogic';
 
 // Define the order of phases in a round
 const PHASE_ORDER: GamePhase[] = [
@@ -141,12 +142,32 @@ function handleBuildNetworkStart(gameState: GameState): GameState {
 /**
  * Phase 5: Bureaucracy
  * All players act simultaneously (but we'll process in order)
+ * This is when we:
+ * 1. Collect income from powered cities
+ * 2. Check for Step 2 trigger
+ * 3. Refill resources
  */
 function handleBureaucracyStart(gameState: GameState): GameState {
-  return {
-    ...gameState,
-    currentPlayerIndex: 0,
-  };
+  const config = PLAYER_CONFIG[gameState.players.length] || PLAYER_CONFIG[4];
+  let newState = { ...gameState, currentPlayerIndex: 0 };
+
+  // Check if Step 2 should be triggered
+  const shouldTriggerStep2 = newState.step === 1 && newState.players.some(
+    (player) => player.cities.length >= config.step2Trigger
+  );
+
+  if (shouldTriggerStep2) {
+    newState = {
+      ...newState,
+      step: 2,
+    };
+    // TODO: Remove lowest plant from market and draw replacement
+  }
+
+  // Refill resources at end of bureaucracy
+  newState = refillResourceMarket(newState);
+
+  return newState;
 }
 
 /**
@@ -219,9 +240,11 @@ export function isPhaseComplete(gameState: GameState): boolean {
  * Check if game end conditions are met
  */
 export function checkGameEnd(gameState: GameState): boolean {
-  // Game ends if any player has 17+ cities
+  const config = PLAYER_CONFIG[gameState.players.length] || PLAYER_CONFIG[4];
+
+  // Game ends if any player has reached the trigger threshold
   const hasWinningPlayer = gameState.players.some(
-    (player) => player.cities.length >= 17
+    (player) => player.cities.length >= config.gameEndTrigger
   );
 
   // TODO: Also check if not enough plants to refill market

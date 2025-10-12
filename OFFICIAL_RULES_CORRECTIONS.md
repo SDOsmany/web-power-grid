@@ -192,11 +192,13 @@ The initial setup is **different** from our implementation:
 ## Implementation Priority
 
 ### HIGH PRIORITY (Must Fix):
-1. ✅ Initial resource market setup
-2. ✅ Plant removal by player count (including 2-player rules)
-3. ✅ Resource refill tables (exact numbers)
-4. ✅ Step 2/3 trigger conditions by player count
+1. ✅ Initial resource market setup (COMPLETED)
+2. ✅ Plant removal by player count (including 2-player rules) (COMPLETED)
+3. ✅ Resource refill tables (exact numbers) (COMPLETED)
+4. ✅ Step 2 trigger conditions by player count (COMPLETED)
 5. ✅ Building costs (10/15/20 verified)
+6. ✅ Game end trigger by player count (COMPLETED)
+7. ✅ Game end timing (after Phase 4, not Phase 5) (COMPLETED)
 
 ### MEDIUM PRIORITY (Should Fix):
 6. Plant removal when equal to city count

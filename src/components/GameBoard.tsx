@@ -28,8 +28,9 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
         return;
       }
     }
-    // Check if game should end
-    if (checkGameEnd(gameState)) {
+
+    // Check if game should end AFTER build-network phase (official rules)
+    if (gameState.phase === 'build-network' && checkGameEnd(gameState)) {
       setGameState({
         ...gameState,
         phase: 'game-over',
