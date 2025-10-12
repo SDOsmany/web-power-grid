@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { GameState } from '../types/game';
 import './GameBoard.css';
 import PlayerPanel from './PlayerPanel';
@@ -6,6 +7,7 @@ import ResourceMarket from './ResourceMarket';
 import GamePhaseDisplay from './GamePhaseDisplay';
 import MapCanvas from './Map/MapCanvas';
 import GameOverScreen from './GameOverScreen';
+import AuctionModal from './Auction/AuctionModal';
 import { advancePhase, checkGameEnd } from '../game/phaseManager';
 
 interface GameBoardProps {
@@ -14,7 +16,18 @@ interface GameBoardProps {
 }
 
 function GameBoard({ gameState, setGameState }: GameBoardProps) {
+  const [showAuction, setShowAuction] = useState(false);
+
   const handleNextPhase = () => {
+    // If entering auction phase, show auction modal instead of advancing
+    if (gameState.phase === 'determine-player-order' || gameState.phase === 'setup') {
+      const newState = advancePhase(gameState);
+      setGameState(newState);
+      if (newState.phase === 'auction-power-plants') {
+        setShowAuction(true);
+        return;
+      }
+    }
     // Check if game should end
     if (checkGameEnd(gameState)) {
       setGameState({
@@ -39,10 +52,29 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
     window.location.reload();
   };
 
+  const handleAuctionComplete = (newGameState: GameState) => {
+    setGameState(newGameState);
+    setShowAuction(false);
+  };
+
+  const handleAuctionClose = () => {
+    setShowAuction(false);
+    // Advance to next phase when auction closes
+    const newState = advancePhase(gameState);
+    setGameState(newState);
+  };
+
   return (
     <div className="game-board">
       {gameState.phase === 'game-over' && (
         <GameOverScreen gameState={gameState} onNewGame={handleNewGame} />
+      )}
+      {showAuction && gameState.phase === 'auction-power-plants' && (
+        <AuctionModal
+          gameState={gameState}
+          onAuctionComplete={handleAuctionComplete}
+          onClose={handleAuctionClose}
+        />
       )}
       <header className="game-header">
         <h1>Power Grid</h1>
