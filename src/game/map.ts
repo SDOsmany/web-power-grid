@@ -1,12 +1,15 @@
 import type { City } from '../types/game';
 
 // Simplified USA map for Power Grid
+// Coordinates are in a 1000x600 space for SVG rendering
 export const USA_MAP: City[] = [
   // Northwest Region
   {
     id: 'seattle',
     name: 'Seattle',
     region: 'northwest',
+    x: 120,
+    y: 80,
     connections: [
       { cityId: 'portland', cost: 3 },
       { cityId: 'boise', cost: 8 },
@@ -16,6 +19,8 @@ export const USA_MAP: City[] = [
     id: 'portland',
     name: 'Portland',
     region: 'northwest',
+    x: 110,
+    y: 130,
     connections: [
       { cityId: 'seattle', cost: 3 },
       { cityId: 'boise', cost: 13 },
@@ -26,6 +31,8 @@ export const USA_MAP: City[] = [
     id: 'boise',
     name: 'Boise',
     region: 'northwest',
+    x: 180,
+    y: 140,
     connections: [
       { cityId: 'seattle', cost: 8 },
       { cityId: 'portland', cost: 13 },
@@ -38,6 +45,8 @@ export const USA_MAP: City[] = [
     id: 'san-francisco',
     name: 'San Francisco',
     region: 'southwest',
+    x: 100,
+    y: 240,
     connections: [
       { cityId: 'portland', cost: 14 },
       { cityId: 'las-vegas', cost: 10 },
@@ -48,6 +57,8 @@ export const USA_MAP: City[] = [
     id: 'los-angeles',
     name: 'Los Angeles',
     region: 'southwest',
+    x: 130,
+    y: 300,
     connections: [
       { cityId: 'san-francisco', cost: 10 },
       { cityId: 'las-vegas', cost: 9 },
@@ -59,6 +70,8 @@ export const USA_MAP: City[] = [
     id: 'san-diego',
     name: 'San Diego',
     region: 'southwest',
+    x: 140,
+    y: 350,
     connections: [
       { cityId: 'los-angeles', cost: 3 },
       { cityId: 'phoenix', cost: 14 },
@@ -68,6 +81,8 @@ export const USA_MAP: City[] = [
     id: 'las-vegas',
     name: 'Las Vegas',
     region: 'southwest',
+    x: 180,
+    y: 260,
     connections: [
       { cityId: 'san-francisco', cost: 10 },
       { cityId: 'los-angeles', cost: 9 },
@@ -78,6 +93,8 @@ export const USA_MAP: City[] = [
     id: 'phoenix',
     name: 'Phoenix',
     region: 'southwest',
+    x: 220,
+    y: 330,
     connections: [
       { cityId: 'los-angeles', cost: 11 },
       { cityId: 'san-diego', cost: 14 },
@@ -90,6 +107,8 @@ export const USA_MAP: City[] = [
     id: 'salt-lake-city',
     name: 'Salt Lake City',
     region: 'central',
+    x: 240,
+    y: 180,
     connections: [
       { cityId: 'boise', cost: 8 },
       { cityId: 'las-vegas', cost: 18 },
@@ -100,6 +119,8 @@ export const USA_MAP: City[] = [
     id: 'denver',
     name: 'Denver',
     region: 'central',
+    x: 340,
+    y: 220,
     connections: [
       { cityId: 'salt-lake-city', cost: 21 },
       { cityId: 'santa-fe', cost: 13 },
@@ -111,6 +132,8 @@ export const USA_MAP: City[] = [
     id: 'santa-fe',
     name: 'Santa Fe',
     region: 'central',
+    x: 320,
+    y: 300,
     connections: [
       { cityId: 'phoenix', cost: 18 },
       { cityId: 'denver', cost: 13 },
@@ -124,6 +147,8 @@ export const USA_MAP: City[] = [
     id: 'dallas',
     name: 'Dallas',
     region: 'south',
+    x: 450,
+    y: 350,
     connections: [
       { cityId: 'santa-fe', cost: 16 },
       { cityId: 'kansas-city', cost: 12 },
@@ -135,6 +160,8 @@ export const USA_MAP: City[] = [
     id: 'houston',
     name: 'Houston',
     region: 'south',
+    x: 480,
+    y: 410,
     connections: [
       { cityId: 'dallas', cost: 5 },
       { cityId: 'new-orleans', cost: 8 },
@@ -144,6 +171,8 @@ export const USA_MAP: City[] = [
     id: 'new-orleans',
     name: 'New Orleans',
     region: 'south',
+    x: 570,
+    y: 420,
     connections: [
       { cityId: 'houston', cost: 8 },
       { cityId: 'memphis', cost: 7 },
@@ -156,6 +185,8 @@ export const USA_MAP: City[] = [
     id: 'omaha',
     name: 'Omaha',
     region: 'midwest',
+    x: 440,
+    y: 180,
     connections: [
       { cityId: 'denver', cost: 14 },
       { cityId: 'kansas-city', cost: 5 },
@@ -166,6 +197,8 @@ export const USA_MAP: City[] = [
     id: 'kansas-city',
     name: 'Kansas City',
     region: 'midwest',
+    x: 470,
+    y: 240,
     connections: [
       { cityId: 'denver', cost: 16 },
       { cityId: 'santa-fe', cost: 16 },
@@ -179,6 +212,8 @@ export const USA_MAP: City[] = [
     id: 'chicago',
     name: 'Chicago',
     region: 'midwest',
+    x: 580,
+    y: 180,
     connections: [
       { cityId: 'omaha', cost: 13 },
       { cityId: 'kansas-city', cost: 8 },
@@ -191,6 +226,8 @@ export const USA_MAP: City[] = [
     id: 'memphis',
     name: 'Memphis',
     region: 'midwest',
+    x: 560,
+    y: 310,
     connections: [
       { cityId: 'dallas', cost: 12 },
       { cityId: 'kansas-city', cost: 12 },
@@ -206,6 +243,8 @@ export const USA_MAP: City[] = [
     id: 'birmingham',
     name: 'Birmingham',
     region: 'southeast',
+    x: 630,
+    y: 350,
     connections: [
       { cityId: 'memphis', cost: 6 },
       { cityId: 'new-orleans', cost: 11 },
@@ -216,6 +255,8 @@ export const USA_MAP: City[] = [
     id: 'atlanta',
     name: 'Atlanta',
     region: 'southeast',
+    x: 680,
+    y: 340,
     connections: [
       { cityId: 'birmingham', cost: 3 },
       { cityId: 'cincinnati', cost: 15 },
@@ -227,6 +268,8 @@ export const USA_MAP: City[] = [
     id: 'savannah',
     name: 'Savannah',
     region: 'southeast',
+    x: 740,
+    y: 360,
     connections: [
       { cityId: 'atlanta', cost: 7 },
       { cityId: 'raleigh', cost: 7 },
@@ -237,6 +280,8 @@ export const USA_MAP: City[] = [
     id: 'jacksonville',
     name: 'Jacksonville',
     region: 'southeast',
+    x: 760,
+    y: 410,
     connections: [
       { cityId: 'savannah', cost: 0 },
       { cityId: 'tampa', cost: 4 },
@@ -246,6 +291,8 @@ export const USA_MAP: City[] = [
     id: 'tampa',
     name: 'Tampa',
     region: 'southeast',
+    x: 750,
+    y: 460,
     connections: [
       { cityId: 'jacksonville', cost: 4 },
       { cityId: 'miami', cost: 4 },
@@ -255,6 +302,8 @@ export const USA_MAP: City[] = [
     id: 'miami',
     name: 'Miami',
     region: 'southeast',
+    x: 760,
+    y: 520,
     connections: [{ cityId: 'tampa', cost: 4 }],
   },
 
@@ -263,6 +312,8 @@ export const USA_MAP: City[] = [
     id: 'detroit',
     name: 'Detroit',
     region: 'northeast',
+    x: 650,
+    y: 150,
     connections: [
       { cityId: 'chicago', cost: 7 },
       { cityId: 'cincinnati', cost: 4 },
@@ -273,6 +324,8 @@ export const USA_MAP: City[] = [
     id: 'cincinnati',
     name: 'Cincinnati',
     region: 'northeast',
+    x: 670,
+    y: 230,
     connections: [
       { cityId: 'chicago', cost: 7 },
       { cityId: 'memphis', cost: 12 },
@@ -286,6 +339,8 @@ export const USA_MAP: City[] = [
     id: 'knoxville',
     name: 'Knoxville',
     region: 'northeast',
+    x: 710,
+    y: 280,
     connections: [
       { cityId: 'cincinnati', cost: 6 },
       { cityId: 'raleigh', cost: 3 },
@@ -296,6 +351,8 @@ export const USA_MAP: City[] = [
     id: 'pittsburgh',
     name: 'Pittsburgh',
     region: 'northeast',
+    x: 740,
+    y: 190,
     connections: [
       { cityId: 'detroit', cost: 6 },
       { cityId: 'cincinnati', cost: 7 },
@@ -308,6 +365,8 @@ export const USA_MAP: City[] = [
     id: 'raleigh',
     name: 'Raleigh',
     region: 'northeast',
+    x: 790,
+    y: 270,
     connections: [
       { cityId: 'knoxville', cost: 3 },
       { cityId: 'pittsburgh', cost: 3 },
@@ -320,6 +379,8 @@ export const USA_MAP: City[] = [
     id: 'washington',
     name: 'Washington',
     region: 'northeast',
+    x: 820,
+    y: 230,
     connections: [
       { cityId: 'pittsburgh', cost: 6 },
       { cityId: 'raleigh', cost: 1 },
@@ -330,6 +391,8 @@ export const USA_MAP: City[] = [
     id: 'philadelphia',
     name: 'Philadelphia',
     region: 'northeast',
+    x: 860,
+    y: 210,
     connections: [
       { cityId: 'washington', cost: 3 },
       { cityId: 'new-york', cost: 0 },
@@ -339,6 +402,8 @@ export const USA_MAP: City[] = [
     id: 'new-york',
     name: 'New York',
     region: 'northeast',
+    x: 880,
+    y: 180,
     connections: [
       { cityId: 'philadelphia', cost: 0 },
       { cityId: 'boston', cost: 3 },
@@ -348,6 +413,8 @@ export const USA_MAP: City[] = [
     id: 'boston',
     name: 'Boston',
     region: 'northeast',
+    x: 910,
+    y: 140,
     connections: [{ cityId: 'new-york', cost: 3 }],
   },
 ];

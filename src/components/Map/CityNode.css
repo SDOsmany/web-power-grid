@@ -1,0 +1,24 @@
+.city-node {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.city-node:hover .city-circle {
+  stroke-width: 3;
+  filter: brightness(1.1);
+}
+
+.city-node:hover .city-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.city-circle {
+  transition: all 0.2s;
+}
+
+.city-label {
+  pointer-events: none;
+  user-select: none;
+  transition: all 0.2s;
+}

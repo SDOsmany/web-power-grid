@@ -1,0 +1,8 @@
+.connection-line {
+  transition: all 0.2s;
+}
+
+.connection-cost {
+  pointer-events: none;
+  user-select: none;
+}

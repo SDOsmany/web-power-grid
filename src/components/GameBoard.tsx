@@ -4,6 +4,7 @@ import PlayerPanel from './PlayerPanel';
 import PowerPlantMarket from './PowerPlantMarket';
 import ResourceMarket from './ResourceMarket';
 import GamePhaseDisplay from './GamePhaseDisplay';
+import MapCanvas from './Map/MapCanvas';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -22,6 +23,10 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
       </header>
 
       <GamePhaseDisplay phase={gameState.phase} />
+
+      <div className="map-section">
+        <MapCanvas gameState={gameState} />
+      </div>
 
       <div className="game-content">
         <div className="left-panel">

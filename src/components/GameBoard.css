@@ -26,6 +26,16 @@
   font-weight: 600;
 }
 
+.map-section {
+  padding: 2rem 2rem 0 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.map-section .map-canvas-container {
+  height: 500px;
+}
+
 .game-content {
   display: grid;
   grid-template-columns: 2fr 1fr;

@@ -14,6 +14,8 @@ export interface City {
   id: string;
   name: string;
   region: string;
+  x: number; // X coordinate for map rendering (0-1000 range)
+  y: number; // Y coordinate for map rendering (0-600 range)
   connections: Connection[];
 }
 
