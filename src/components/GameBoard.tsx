@@ -5,6 +5,8 @@ import PowerPlantMarket from './PowerPlantMarket';
 import ResourceMarket from './ResourceMarket';
 import GamePhaseDisplay from './GamePhaseDisplay';
 import MapCanvas from './Map/MapCanvas';
+import GameOverScreen from './GameOverScreen';
+import { advancePhase, checkGameEnd } from '../game/phaseManager';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -12,8 +14,36 @@ interface GameBoardProps {
 }
 
 function GameBoard({ gameState, setGameState }: GameBoardProps) {
+  const handleNextPhase = () => {
+    // Check if game should end
+    if (checkGameEnd(gameState)) {
+      setGameState({
+        ...gameState,
+        phase: 'game-over',
+      });
+      return;
+    }
+
+    // Advance to next phase
+    const newState = advancePhase(gameState);
+    setGameState(newState);
+  };
+
+  const handleSaveGame = () => {
+    // TODO: Implement save game functionality
+    alert('Save game feature coming in Phase 3!');
+  };
+
+  const handleNewGame = () => {
+    // Reload the page to start a new game
+    window.location.reload();
+  };
+
   return (
     <div className="game-board">
+      {gameState.phase === 'game-over' && (
+        <GameOverScreen gameState={gameState} onNewGame={handleNewGame} />
+      )}
       <header className="game-header">
         <h1>Power Grid</h1>
         <div className="game-info">
@@ -49,8 +79,16 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
       </div>
 
       <div className="game-controls">
-        <button className="control-btn">Next Phase</button>
-        <button className="control-btn secondary">Save Game</button>
+        <button
+          className="control-btn"
+          onClick={handleNextPhase}
+          disabled={gameState.phase === 'game-over'}
+        >
+          {gameState.phase === 'game-over' ? 'Game Over' : 'Next Phase'}
+        </button>
+        <button className="control-btn secondary" onClick={handleSaveGame}>
+          Save Game
+        </button>
       </div>
     </div>
   );

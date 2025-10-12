@@ -96,6 +96,17 @@
   background: linear-gradient(135deg, #868f96 0%, #596164 100%);
 }
 
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.control-btn:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 1200px) {
   .game-content {
     grid-template-columns: 1fr;
