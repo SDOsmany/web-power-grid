@@ -1,4 +1,4 @@
-import { GameState, Player, ResourceMarket } from '../types/game';
+import type { GameState, Player, ResourceMarket } from '../types/game';
 import { ALL_POWER_PLANTS, STEP_3_CARD } from './powerPlants';
 import { USA_MAP } from './map';
 

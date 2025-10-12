@@ -1,4 +1,4 @@
-import { GameState } from '../types/game';
+import type { GameState } from '../types/game';
 import './GameBoard.css';
 import PlayerPanel from './PlayerPanel';
 import PowerPlantMarket from './PowerPlantMarket';

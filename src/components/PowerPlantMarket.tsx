@@ -1,4 +1,4 @@
-import { PowerPlant } from '../types/game';
+import type { PowerPlant } from '../types/game';
 import './PowerPlantMarket.css';
 
 interface PowerPlantMarketProps {

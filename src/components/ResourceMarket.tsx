@@ -1,4 +1,4 @@
-import { ResourceMarket as ResourceMarketType } from '../types/game';
+import type { ResourceMarket as ResourceMarketType } from '../types/game';
 import './ResourceMarket.css';
 
 interface ResourceMarketProps {

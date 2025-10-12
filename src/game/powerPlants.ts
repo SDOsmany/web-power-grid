@@ -1,4 +1,4 @@
-import { PowerPlant } from '../types/game';
+import type { PowerPlant } from '../types/game';
 
 // All power plants in the game (based on the original Power Grid)
 export const ALL_POWER_PLANTS: PowerPlant[] = [

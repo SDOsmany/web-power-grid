@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { GameState, Player } from './types/game';
+import type { GameState } from './types/game';
 import { initializeGame } from './game/gameLogic';
 import GameBoard from './components/GameBoard';
 import SetupScreen from './components/SetupScreen';

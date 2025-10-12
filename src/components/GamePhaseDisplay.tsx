@@ -1,4 +1,4 @@
-import { GamePhase } from '../types/game';
+import type { GamePhase } from '../types/game';
 import './GamePhaseDisplay.css';
 
 interface GamePhaseDisplayProps {

@@ -1,4 +1,4 @@
-import { City } from '../types/game';
+import type { City } from '../types/game';
 
 // Simplified USA map for Power Grid
 export const USA_MAP: City[] = [
