@@ -1,0 +1,72 @@
+.resource-market {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resource-market h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+}
+
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resource-row {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.resource-row:hover {
+  transform: translateX(4px);
+}
+
+.resource-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.resource-header .resource-icon-large {
+  font-size: 1.75rem;
+}
+
+.resource-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.resource-info {
+  display: flex;
+  gap: 2rem;
+}
+
+.resource-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.resource-stat .label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.resource-stat .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}

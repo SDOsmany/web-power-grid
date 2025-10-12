@@ -1,0 +1,21 @@
+.phase-display {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 1.5rem 2rem;
+  margin: 0 2rem 1rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid #667eea;
+}
+
+.phase-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.phase-description {
+  font-size: 1rem;
+  color: #666;
+}

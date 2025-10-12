@@ -1,0 +1,93 @@
+.game-board {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+}
+
+.game-header {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-info {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.game-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.players-section h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.game-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.control-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+}
+
+.control-btn.secondary {
+  background: linear-gradient(135deg, #868f96 0%, #596164 100%);
+}
+
+@media (max-width: 1200px) {
+  .game-content {
+    grid-template-columns: 1fr;
+  }
+}

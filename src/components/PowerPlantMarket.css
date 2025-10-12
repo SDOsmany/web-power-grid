@@ -1,0 +1,106 @@
+.power-plant-market {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.power-plant-market h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+}
+
+.market-section {
+  margin-bottom: 2rem;
+}
+
+.market-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.plants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.power-plant-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.power-plant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.plant-number {
+  background: #2c3e50;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem;
+  text-align: center;
+}
+
+.plant-info {
+  padding: 1rem;
+}
+
+.plant-resource {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.resource-icon-large {
+  font-size: 1.5rem;
+}
+
+.resource-type {
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #555;
+}
+
+.plant-stats {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-item .stat-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.stat-item .stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.deck-info {
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+}
