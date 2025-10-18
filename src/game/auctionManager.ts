@@ -11,7 +11,8 @@ export function startAuction(
   return {
     plant,
     currentBid: plant.number, // Minimum bid is the plant number
-    currentBidder: null,
+    currentBidder: null, // No bidder yet - first bidder can bid at minimum
+    startingPlayer: startingPlayerId, // Track who started the auction
     activePlayers: gameState.players.map(p => p.id),
     passedPlayers: [],
   };
@@ -54,9 +55,22 @@ export function isAuctionComplete(auction: AuctionState): boolean {
  * Get the winner of the auction
  */
 export function getAuctionWinner(auction: AuctionState): string | null {
+  // If only one player left active, they win
   if (auction.activePlayers.length === 1) {
     return auction.activePlayers[0];
   }
+
+  // If all players passed and we have a current bidder, they win
+  if (auction.activePlayers.length === 0 && auction.currentBidder) {
+    return auction.currentBidder;
+  }
+
+  // If nobody bid (everyone passed without bidding), the starting player must take it
+  // This happens when the player who selected the plant is the last one standing
+  if (auction.activePlayers.length === 0 && !auction.currentBidder) {
+    return auction.startingPlayer;
+  }
+
   return auction.currentBidder;
 }
 

@@ -81,6 +81,7 @@ export interface AuctionState {
   plant: PowerPlant;
   currentBid: number;
   currentBidder: string | null;
+  startingPlayer: string; // Player who started the auction
   activePlayers: string[]; // Players still in the auction
   passedPlayers: string[]; // Players who passed
 }

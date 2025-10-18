@@ -43,8 +43,13 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
   const handleBid = () => {
     if (!auction || !currentPlayer) return;
 
-    if (bidAmount < auction.currentBid + 1) {
-      alert('Bid must be at least ' + (auction.currentBid + 1));
+    // First bid can be at minimum, subsequent bids must be higher
+    const minimumBid = auction.currentBidder === null
+      ? auction.currentBid  // First bid can match minimum (plant number)
+      : auction.currentBid + 1;  // Subsequent bids must be higher
+
+    if (bidAmount < minimumBid) {
+      alert('Bid must be at least ' + minimumBid);
       return;
     }
 
@@ -115,6 +120,13 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
 
     // Complete auction
     onAuctionComplete(newGameState);
+  };
+
+  // Cancel auction and go back to plant selection
+  const handleCancelAuction = () => {
+    setAuction(null);
+    setSelectedPlant(null);
+    setBidAmount(0);
   };
 
   // Player can pass if they already have a plant OR it's not first round
@@ -249,25 +261,37 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
                   type="number"
                   value={bidAmount}
                   onChange={(e) => setBidAmount(parseInt(e.target.value) || 0)}
-                  min={auction.currentBid + 1}
+                  min={auction.currentBidder === null ? auction.currentBid : auction.currentBid + 1}
                   className="bid-input"
                 />
                 <button
                   className="bid-btn"
                   onClick={handleBid}
-                  disabled={bidAmount < auction.currentBid + 1}
+                  disabled={
+                    auction.currentBidder === null
+                      ? bidAmount < auction.currentBid
+                      : bidAmount < auction.currentBid + 1
+                  }
                 >
                   Place Bid
                 </button>
               </div>
 
-              <button
-                className="pass-btn"
-                onClick={handlePass}
-                disabled={!canPass()}
-              >
-                Pass
-              </button>
+              <div className="action-buttons">
+                <button
+                  className="pass-btn"
+                  onClick={handlePass}
+                  disabled={!canPass()}
+                >
+                  Pass
+                </button>
+                <button
+                  className="cancel-btn"
+                  onClick={handleCancelAuction}
+                >
+                  Choose Different Plant
+                </button>
+              </div>
             </div>
 
             <div className="active-players">
