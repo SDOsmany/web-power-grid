@@ -200,3 +200,51 @@ export function isFirstRound(gameState: GameState): boolean {
 export function allPlayersHavePlants(gameState: GameState): boolean {
   return gameState.players.every(player => player.powerPlants.length > 0);
 }
+
+/**
+ * Get next player who hasn't bought a plant this round
+ * Returns null if everyone has bought or passed
+ */
+export function getNextPlayerForAuction(gameState: GameState): string | null {
+  // Find next player in order who hasn't bought this round
+  for (let i = 0; i < gameState.players.length; i++) {
+    const playerIndex = (gameState.currentPlayerIndex + i) % gameState.players.length;
+    const player = gameState.players[playerIndex];
+
+    // Skip if player already bought this round
+    if (gameState.playersWhoHaveBoughtThisRound.includes(player.id)) {
+      continue;
+    }
+
+    return player.id;
+  }
+
+  return null; // All players have bought
+}
+
+/**
+ * Check if auction phase should end
+ * Ends when all players have either bought a plant or everyone who needs one has one
+ */
+export function shouldAuctionPhaseEnd(gameState: GameState): boolean {
+  const isFirstRoundGame = isFirstRound(gameState);
+
+  if (isFirstRoundGame) {
+    // First round: everyone must buy, so end when everyone has a plant
+    return allPlayersHavePlants(gameState);
+  }
+
+  // Later rounds: end when everyone has had a chance
+  // If no one left to auction, phase ends
+  return getNextPlayerForAuction(gameState) === null;
+}
+
+/**
+ * Mark player as having bought this round and get updated game state
+ */
+export function markPlayerAsBought(gameState: GameState, playerId: string): GameState {
+  return {
+    ...gameState,
+    playersWhoHaveBoughtThisRound: [...gameState.playersWhoHaveBoughtThisRound, playerId],
+  };
+}

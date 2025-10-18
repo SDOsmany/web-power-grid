@@ -11,6 +11,9 @@ import {
   canAffordBid,
   getNextAuctionPlayer,
   isFirstRound,
+  markPlayerAsBought,
+  getNextPlayerForAuction,
+  shouldAuctionPhaseEnd,
 } from '../../game/auctionManager';
 import './AuctionModal.css';
 
@@ -118,8 +121,38 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
     // Refresh market
     newGameState = refreshPowerPlantMarket(newGameState, selectedPlant);
 
-    // Complete auction
-    onAuctionComplete(newGameState);
+    // Mark winner as having bought this round
+    newGameState = markPlayerAsBought(newGameState, winnerId);
+
+    // Check if auction phase should end
+    if (shouldAuctionPhaseEnd(newGameState)) {
+      // Auction phase is complete, close modal
+      onAuctionComplete(newGameState);
+      return;
+    }
+
+    // Get next player who hasn't bought
+    const nextPlayerId = getNextPlayerForAuction(newGameState);
+
+    if (nextPlayerId) {
+      // Move to next player and update game state
+      const nextPlayerIndex = newGameState.players.findIndex(p => p.id === nextPlayerId);
+      newGameState = {
+        ...newGameState,
+        currentPlayerIndex: nextPlayerIndex,
+      };
+
+      // Update local state to show next player's turn
+      setCurrentTurnPlayerId(nextPlayerId);
+      setAuction(null);
+      setSelectedPlant(null);
+
+      // Update game state but keep modal open
+      onAuctionComplete(newGameState);
+    } else {
+      // No one left to auction, close modal
+      onAuctionComplete(newGameState);
+    }
   };
 
   // Cancel auction and go back to plant selection

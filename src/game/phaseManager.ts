@@ -111,9 +111,11 @@ function handleDeterminePlayerOrder(gameState: GameState): GameState {
  */
 function handleAuctionStart(gameState: GameState): GameState {
   // Reset to first player (already sorted from Phase 1)
+  // Clear the list of players who bought this round
   return {
     ...gameState,
     currentPlayerIndex: 0,
+    playersWhoHaveBoughtThisRound: [], // Reset for new auction round
   };
 }
 

@@ -74,6 +74,7 @@ export interface GameState {
   cities: City[];
   step: 1 | 2 | 3; // Game progresses through 3 steps
   firstPlayerToReachThreshold: string | null;
+  playersWhoHaveBoughtThisRound: string[]; // Track who has bought a plant this auction round
 }
 
 // Auction state

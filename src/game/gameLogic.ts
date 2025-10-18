@@ -151,6 +151,7 @@ export function initializeGame(playerNames: string[]): GameState {
     cities: USA_MAP,
     step: 1,
     firstPlayerToReachThreshold: null,
+    playersWhoHaveBoughtThisRound: [], // Reset at start of each auction round
   };
 }
 
