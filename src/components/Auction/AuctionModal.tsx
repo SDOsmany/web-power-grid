@@ -77,9 +77,9 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
   const handlePass = () => {
     if (!auction) return;
 
-    // In first round, cannot pass if you don't have a plant
-    if (isFirstRoundGame && currentPlayer && currentPlayer.powerPlants.length === 0) {
-      alert('You must buy a plant in the first round!');
+    // Use the validation function
+    if (!canPassDuringAuction()) {
+      alert('You cannot pass - you must bid on the plant you selected!');
       return;
     }
 
@@ -129,8 +129,28 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
     setBidAmount(0);
   };
 
-  // Player can pass if they already have a plant OR it's not first round
-  const canPass = () => {
+  // Player can pass during auction bidding
+  const canPassDuringAuction = () => {
+    if (!currentPlayer || !auction) return false;
+
+    // If we're in an active auction (someone selected a plant and is bidding)
+    // In first round: Can pass if you're NOT the one who selected the plant OR you already have a plant
+    if (isFirstRoundGame) {
+      // If you're the one who started the auction and have no plants, you can't pass
+      // (but you already bid by selecting, so this shouldn't happen)
+      if (currentTurnPlayerId === auction.startingPlayer && currentPlayer.powerPlants.length === 0) {
+        return false;
+      }
+      // Everyone else can pass, even without plants, because someone already bid
+      return true;
+    }
+
+    // Not first round - everyone can pass
+    return true;
+  };
+
+  // Player can pass at plant selection phase (before selecting a plant)
+  const canPassSelection = () => {
     if (!currentPlayer) return false;
     if (!isFirstRoundGame) return true;
     return currentPlayer.powerPlants.length > 0;
@@ -205,7 +225,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
                 </div>
               ))}
             </div>
-            {canPass() && (
+            {canPassSelection() && (
               <button className="pass-btn-large" onClick={onClose}>
                 Pass (Don't buy this turn)
               </button>
@@ -281,16 +301,19 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
                 <button
                   className="pass-btn"
                   onClick={handlePass}
-                  disabled={!canPass()}
+                  disabled={!canPassDuringAuction()}
                 >
                   Pass
                 </button>
-                <button
-                  className="cancel-btn"
-                  onClick={handleCancelAuction}
-                >
-                  Choose Different Plant
-                </button>
+                {/* Only show cancel button for the player who started the auction */}
+                {currentTurnPlayerId === auction.startingPlayer && auction.currentBidder === null && (
+                  <button
+                    className="cancel-btn"
+                    onClick={handleCancelAuction}
+                  >
+                    Choose Different Plant
+                  </button>
+                )}
               </div>
             </div>
 
