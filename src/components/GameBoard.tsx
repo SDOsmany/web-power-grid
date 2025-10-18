@@ -8,6 +8,7 @@ import GamePhaseDisplay from './GamePhaseDisplay';
 import MapCanvas from './Map/MapCanvas';
 import GameOverScreen from './GameOverScreen';
 import AuctionModal from './Auction/AuctionModal';
+import ResourcePurchaseModal from './Resources/ResourcePurchaseModal';
 import { advancePhase, checkGameEnd } from '../game/phaseManager';
 
 interface GameBoardProps {
@@ -17,6 +18,7 @@ interface GameBoardProps {
 
 function GameBoard({ gameState, setGameState }: GameBoardProps) {
   const [showAuction, setShowAuction] = useState(false);
+  const [showResourcePurchase, setShowResourcePurchase] = useState(false);
 
   const handleNextPhase = () => {
     // If entering auction phase, show auction modal instead of advancing
@@ -25,6 +27,16 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
       setGameState(newState);
       if (newState.phase === 'auction-power-plants') {
         setShowAuction(true);
+        return;
+      }
+    }
+
+    // If entering buy-resources phase, show resource purchase modal
+    if (gameState.phase === 'auction-power-plants') {
+      const newState = advancePhase(gameState);
+      setGameState(newState);
+      if (newState.phase === 'buy-resources') {
+        setShowResourcePurchase(true);
         return;
       }
     }
@@ -63,6 +75,37 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
     // Advance to next phase when auction closes
     const newState = advancePhase(gameState);
     setGameState(newState);
+    if (newState.phase === 'buy-resources') {
+      setShowResourcePurchase(true);
+    }
+  };
+
+  const handleResourcePurchase = (newGameState: GameState) => {
+    setGameState(newGameState);
+  };
+
+  const handleResourcePurchasePass = () => {
+    // Move to next player or advance phase if all players are done
+    const nextPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+
+    if (nextPlayerIndex === 0) {
+      // All players have had their turn, close modal and advance phase
+      setShowResourcePurchase(false);
+      const newState = advancePhase(gameState);
+      setGameState(newState);
+    } else {
+      // Move to next player
+      setGameState({
+        ...gameState,
+        currentPlayerIndex: nextPlayerIndex,
+      });
+    }
+  };
+
+  const handleResourcePurchaseClose = () => {
+    setShowResourcePurchase(false);
+    const newState = advancePhase(gameState);
+    setGameState(newState);
   };
 
   return (
@@ -75,6 +118,14 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
           gameState={gameState}
           onAuctionComplete={handleAuctionComplete}
           onClose={handleAuctionClose}
+        />
+      )}
+      {showResourcePurchase && gameState.phase === 'buy-resources' && (
+        <ResourcePurchaseModal
+          gameState={gameState}
+          onPurchase={handleResourcePurchase}
+          onPass={handleResourcePurchasePass}
+          onClose={handleResourcePurchaseClose}
         />
       )}
       <header className="game-header">

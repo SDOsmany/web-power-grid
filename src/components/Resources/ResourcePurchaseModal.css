@@ -1,0 +1,152 @@
+.resource-purchase-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.player-info {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.player-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+}
+
+.player-money {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.resource-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.resource-option {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  transition: all 0.2s;
+}
+
+.resource-option:not(.disabled):hover {
+  border-color: #4ECDC4;
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+  transform: translateY(-2px);
+}
+
+.resource-option.disabled {
+  opacity: 0.5;
+  background: #f9f9f9;
+}
+
+.resource-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.resource-icon {
+  font-size: 2em;
+}
+
+.resource-name {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.resource-details {
+  margin: 10px 0;
+}
+
+.resource-details p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+.purchase-status {
+  margin: 10px 0;
+  padding: 5px;
+  background: #fff3cd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.status-text {
+  font-size: 0.85em;
+  color: #856404;
+}
+
+.purchase-button {
+  width: 100%;
+  padding: 10px;
+  background: #4ECDC4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.purchase-button:hover:not(:disabled) {
+  background: #45B7D1;
+}
+
+.purchase-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.current-resources {
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.current-resources h4 {
+  margin: 0 0 10px 0;
+}
+
+.resource-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 1.1em;
+}
+
+.resource-summary span {
+  padding: 5px 10px;
+  background: white;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.pass-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: #FFA07A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pass-button:hover {
+  background: #ff8c61;
+}
