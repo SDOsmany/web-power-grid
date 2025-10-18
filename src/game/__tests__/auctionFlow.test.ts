@@ -262,3 +262,53 @@ describe('Auction Flow - Edge Cases', () => {
     expect(getAuctionWinner(afterAPass)).toBe('playerA');
   });
 });
+
+describe('Auction Flow - Players Who Already Bought Are Excluded', () => {
+  it('excludes players who already bought from new auction', () => {
+    const gameState = createMockGameState();
+
+    // Player A already bought in a previous auction this round
+    gameState.playersWhoHaveBoughtThisRound = ['playerA'];
+
+    // Player B starts new auction
+    const auction = startAuction(gameState, mockPlant, 'playerB');
+
+    // Only B and C should be active (A already bought)
+    expect(auction.activePlayers).toHaveLength(2);
+    expect(auction.activePlayers).toContain('playerB');
+    expect(auction.activePlayers).toContain('playerC');
+    expect(auction.activePlayers).not.toContain('playerA');
+  });
+
+  it('handles scenario: A wins, B starts auction with only B and C bidding', () => {
+    const gameState = createMockGameState();
+
+    // FIRST AUCTION - All three players can bid
+    let auction1 = startAuction(gameState, mockPlant, 'playerA');
+    expect(auction1.activePlayers).toHaveLength(3);
+
+    // A wins (simulated - mark as bought)
+    gameState.playersWhoHaveBoughtThisRound = ['playerA'];
+
+    // SECOND AUCTION - Only B and C can bid
+    const auction2 = startAuction(gameState, mockPlant, 'playerB');
+    expect(auction2.activePlayers).toHaveLength(2);
+    expect(auction2.activePlayers).toContain('playerB');
+    expect(auction2.activePlayers).toContain('playerC');
+    expect(auction2.activePlayers).not.toContain('playerA'); // A already bought!
+  });
+
+  it('handles scenario: A and B win, C gets last plant automatically', () => {
+    const gameState = createMockGameState();
+
+    // A and B already bought
+    gameState.playersWhoHaveBoughtThisRound = ['playerA', 'playerB'];
+
+    // C starts auction (only C can bid in first round)
+    const auction3 = startAuction(gameState, mockPlant, 'playerC');
+
+    // In first round, C must take it
+    expect(auction3.activePlayers).toHaveLength(1);
+    expect(auction3.activePlayers).toContain('playerC');
+  });
+});

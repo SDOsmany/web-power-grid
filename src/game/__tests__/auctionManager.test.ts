@@ -45,6 +45,7 @@ const createMockGameState = (numPlayers: number = 3): GameState => ({
   cities: [],
   step: 1,
   firstPlayerToReachThreshold: null,
+  playersWhoHaveBoughtThisRound: [],
 });
 
 describe('Auction System - Basic Flow', () => {

@@ -2,18 +2,24 @@ import type { GameState, PowerPlant, Player, AuctionState } from '../types/game'
 
 /**
  * Initialize a new auction for a power plant
+ * Only includes players who haven't bought this round
  */
 export function startAuction(
   gameState: GameState,
   plant: PowerPlant,
   startingPlayerId: string
 ): AuctionState {
+  // Only include players who haven't already bought this round
+  const eligiblePlayers = gameState.players
+    .map(p => p.id)
+    .filter(id => !gameState.playersWhoHaveBoughtThisRound.includes(id));
+
   return {
     plant,
     currentBid: plant.number, // Minimum bid is the plant number
     currentBidder: null, // No bidder yet - first bidder can bid at minimum
     startingPlayer: startingPlayerId, // Track who started the auction
-    activePlayers: gameState.players.map(p => p.id),
+    activePlayers: eligiblePlayers, // Only players who haven't bought yet
     passedPlayers: [],
   };
 }

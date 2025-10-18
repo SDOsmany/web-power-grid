@@ -23,20 +23,22 @@ interface AuctionModalProps {
   onClose: () => void;
 }
 
-function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalProps) {
+function AuctionModal({ gameState: initialGameState, onAuctionComplete, onClose }: AuctionModalProps) {
+  // Internal game state that updates during the auction round
+  const [internalGameState, setInternalGameState] = useState<GameState>(initialGameState);
   const [auction, setAuction] = useState<AuctionState | null>(null);
   const [selectedPlant, setSelectedPlant] = useState<PowerPlant | null>(null);
   const [bidAmount, setBidAmount] = useState<number>(0);
   const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState<string>(
-    gameState.players[gameState.currentPlayerIndex]?.id || ''
+    initialGameState.players[initialGameState.currentPlayerIndex]?.id || ''
   );
 
-  const currentPlayer = gameState.players.find(p => p.id === currentTurnPlayerId);
-  const isFirstRoundGame = isFirstRound(gameState);
+  const currentPlayer = internalGameState.players.find(p => p.id === currentTurnPlayerId);
+  const isFirstRoundGame = isFirstRound(internalGameState);
 
   // Plant selection phase (before auction starts)
   const handleSelectPlant = (plant: PowerPlant) => {
-    const newAuction = startAuction(gameState, plant, currentTurnPlayerId);
+    const newAuction = startAuction(internalGameState, plant, currentTurnPlayerId);
     setAuction(newAuction);
     setSelectedPlant(plant);
     setBidAmount(plant.number); // Minimum bid
@@ -65,7 +67,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
     setAuction(newAuction);
 
     // Move to next player
-    const nextPlayerId = getNextAuctionPlayer(newAuction, currentTurnPlayerId, gameState.players);
+    const nextPlayerId = getNextAuctionPlayer(newAuction, currentTurnPlayerId, internalGameState.players);
     if (nextPlayerId) {
       setCurrentTurnPlayerId(nextPlayerId);
     }
@@ -94,7 +96,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
       completeAuction(newAuction);
     } else {
       // Move to next player
-      const nextPlayerId = getNextAuctionPlayer(newAuction, currentTurnPlayerId, gameState.players);
+      const nextPlayerId = getNextAuctionPlayer(newAuction, currentTurnPlayerId, internalGameState.players);
       if (nextPlayerId) {
         setCurrentTurnPlayerId(nextPlayerId);
       }
@@ -112,7 +114,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
 
     // Award plant to winner
     let newGameState = awardPlant(
-      gameState,
+      internalGameState,
       winnerId,
       selectedPlant,
       finalAuction.currentBid
@@ -126,7 +128,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
 
     // Check if auction phase should end
     if (shouldAuctionPhaseEnd(newGameState)) {
-      // Auction phase is complete, close modal
+      // Auction phase is complete, notify parent and close modal
       onAuctionComplete(newGameState);
       return;
     }
@@ -135,22 +137,21 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
     const nextPlayerId = getNextPlayerForAuction(newGameState);
 
     if (nextPlayerId) {
-      // Move to next player and update game state
+      // Move to next player and update INTERNAL state (keep modal open)
       const nextPlayerIndex = newGameState.players.findIndex(p => p.id === nextPlayerId);
       newGameState = {
         ...newGameState,
         currentPlayerIndex: nextPlayerIndex,
       };
 
-      // Update local state to show next player's turn
+      // Update internal state to show next player's turn
+      setInternalGameState(newGameState);
       setCurrentTurnPlayerId(nextPlayerId);
       setAuction(null);
       setSelectedPlant(null);
-
-      // Update game state but keep modal open
-      onAuctionComplete(newGameState);
+      // Modal stays open for next player!
     } else {
-      // No one left to auction, close modal
+      // No one left to auction, phase is complete
       onAuctionComplete(newGameState);
     }
   };
@@ -232,7 +233,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
               {currentPlayer?.name}, select a plant to auction:
             </h3>
             <div className="plants-grid">
-              {gameState.powerPlantMarket.current.map(plant => (
+              {internalGameState.powerPlantMarket.current.map(plant => (
                 <div
                   key={plant.number}
                   className="auction-plant-card"
@@ -295,7 +296,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
               <div className="current-bid-amount">${auction.currentBid}</div>
               {auction.currentBidder && (
                 <div className="current-bidder">
-                  by {gameState.players.find(p => p.id === auction.currentBidder)?.name}
+                  by {internalGameState.players.find(p => p.id === auction.currentBidder)?.name}
                 </div>
               )}
             </div>
@@ -354,7 +355,7 @@ function AuctionModal({ gameState, onAuctionComplete, onClose }: AuctionModalPro
               <h4>Active Bidders:</h4>
               <div className="players-list">
                 {auction.activePlayers.map(playerId => {
-                  const player = gameState.players.find(p => p.id === playerId);
+                  const player = internalGameState.players.find(p => p.id === playerId);
                   return (
                     <div
                       key={playerId}
