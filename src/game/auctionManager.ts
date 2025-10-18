@@ -162,6 +162,8 @@ export function canAffordBid(player: Player, bidAmount: number): boolean {
 
 /**
  * Get the next player in auction order
+ * Rotates through players in the GAME ORDER (not activePlayers order)
+ * Skips players who have passed
  */
 export function getNextAuctionPlayer(
   auction: AuctionState,
@@ -174,17 +176,28 @@ export function getNextAuctionPlayer(
     return null;
   }
 
-  // Find current player index in active players
-  const currentIndex = activePlayerIds.indexOf(currentPlayerId);
+  // Find current player's index in the GAME PLAYER ORDER (not active players)
+  const allPlayerIds = allPlayers.map(p => p.id);
+  const currentGameIndex = allPlayerIds.indexOf(currentPlayerId);
 
-  if (currentIndex === -1) {
-    // Current player not active, return first active player
+  if (currentGameIndex === -1) {
+    // Current player not found, return first active player
     return activePlayerIds[0];
   }
 
-  // Return next active player (wrap around)
-  const nextIndex = (currentIndex + 1) % activePlayerIds.length;
-  return activePlayerIds[nextIndex];
+  // Look for next active player in circular game order
+  for (let i = 1; i <= allPlayers.length; i++) {
+    const nextGameIndex = (currentGameIndex + i) % allPlayers.length;
+    const nextPlayerId = allPlayerIds[nextGameIndex];
+
+    // If this player is still active in the auction, return them
+    if (activePlayerIds.includes(nextPlayerId)) {
+      return nextPlayerId;
+    }
+  }
+
+  // No active players found (shouldn't happen)
+  return activePlayerIds[0];
 }
 
 /**
