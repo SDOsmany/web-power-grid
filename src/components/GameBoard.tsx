@@ -9,6 +9,7 @@ import MapCanvas from './Map/MapCanvas';
 import GameOverScreen from './GameOverScreen';
 import AuctionModal from './Auction/AuctionModal';
 import ResourcePurchaseModal from './Resources/ResourcePurchaseModal';
+import BuildNetworkModal from './Network/BuildNetworkModal';
 import { advancePhase, checkGameEnd } from '../game/phaseManager';
 
 interface GameBoardProps {
@@ -19,6 +20,7 @@ interface GameBoardProps {
 function GameBoard({ gameState, setGameState }: GameBoardProps) {
   const [showAuction, setShowAuction] = useState(false);
   const [showResourcePurchase, setShowResourcePurchase] = useState(false);
+  const [showBuildNetwork, setShowBuildNetwork] = useState(false);
 
   const handleNextPhase = () => {
     // If entering auction phase, show auction modal instead of advancing
@@ -37,6 +39,16 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
       setGameState(newState);
       if (newState.phase === 'buy-resources') {
         setShowResourcePurchase(true);
+        return;
+      }
+    }
+
+    // If entering build-network phase, show build network modal
+    if (gameState.phase === 'buy-resources') {
+      const newState = advancePhase(gameState);
+      setGameState(newState);
+      if (newState.phase === 'build-network') {
+        setShowBuildNetwork(true);
         return;
       }
     }
@@ -106,6 +118,37 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
     setShowResourcePurchase(false);
     const newState = advancePhase(gameState);
     setGameState(newState);
+    if (newState.phase === 'build-network') {
+      setShowBuildNetwork(true);
+    }
+  };
+
+  const handleBuild = (newGameState: GameState) => {
+    setGameState(newGameState);
+  };
+
+  const handleBuildPass = () => {
+    // Move to next player or advance phase if all players are done
+    const nextPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+
+    if (nextPlayerIndex === 0) {
+      // All players have had their turn, close modal and advance phase
+      setShowBuildNetwork(false);
+      const newState = advancePhase(gameState);
+      setGameState(newState);
+    } else {
+      // Move to next player
+      setGameState({
+        ...gameState,
+        currentPlayerIndex: nextPlayerIndex,
+      });
+    }
+  };
+
+  const handleBuildClose = () => {
+    setShowBuildNetwork(false);
+    const newState = advancePhase(gameState);
+    setGameState(newState);
   };
 
   return (
@@ -126,6 +169,14 @@ function GameBoard({ gameState, setGameState }: GameBoardProps) {
           onPurchase={handleResourcePurchase}
           onPass={handleResourcePurchasePass}
           onClose={handleResourcePurchaseClose}
+        />
+      )}
+      {showBuildNetwork && gameState.phase === 'build-network' && (
+        <BuildNetworkModal
+          gameState={gameState}
+          onBuild={handleBuild}
+          onPass={handleBuildPass}
+          onClose={handleBuildClose}
         />
       )}
       <header className="game-header">
