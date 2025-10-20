@@ -167,19 +167,22 @@ function AuctionModal({ gameState: initialGameState, onAuctionComplete, onClose 
   const canPassDuringAuction = () => {
     if (!currentPlayer || !auction) return false;
 
-    // If we're in an active auction (someone selected a plant and is bidding)
-    // In first round: Can pass if you're NOT the one who selected the plant OR you already have a plant
+    // In first round, special rules apply
     if (isFirstRoundGame) {
-      // If you're the one who started the auction and have no plants, you can't pass
-      // (but you already bid by selecting, so this shouldn't happen)
+      // If you're the one who started the auction and have no plants...
       if (currentTurnPlayerId === auction.startingPlayer && currentPlayer.powerPlants.length === 0) {
-        return false;
+        // ...you can only pass if someone else has already bid
+        // (If nobody bid yet, you must make first bid)
+        if (auction.currentBidder === null) {
+          return false; // Must make first bid
+        }
+        return true; // Someone else bid, you can pass now
       }
-      // Everyone else can pass, even without plants, because someone already bid
+      // Everyone else can always pass (even without plants)
       return true;
     }
 
-    // Not first round - everyone can pass
+    // Not first round - everyone can always pass
     return true;
   };
 
